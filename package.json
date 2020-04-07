@@ -1,10 +1,10 @@
 {
   "name": "fuck-nestjs",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Just for learning Netjs Basic",
+  "author": "Harry Trần<harrytran998>",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
