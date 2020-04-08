@@ -1,4 +1,4 @@
-export class CreateTodoDTO {
+export class ArgsTodoDTO {
   readonly title: string
   readonly description?: string
 }

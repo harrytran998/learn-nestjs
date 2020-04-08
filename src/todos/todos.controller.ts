@@ -1,19 +1,23 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, Query, Patch } from '@nestjs/common'
 import { TodosService } from './todos.service'
-import { Todo } from './todos.model'
-import { CreateTodoDTO } from './dto/create-todo.dto'
+import { Todo, TodoStatus } from './todos.model'
+import { ArgsTodoDTO } from './dto/argsTodo.dto'
+import { FilterTodoDTO } from './dto/filterTodo.dto'
 
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todoService: TodosService) {}
 
   @Get()
-  getAllTodos(): Todo[] {
+  getTodos(@Query() filterDto: FilterTodoDTO): Todo[] {
+    if (Object.keys(filterDto).length) {
+      return this.todoService.getFilterTodos(filterDto)
+    }
     return this.todoService.getAllTodos()
   }
 
   @Post()
-  createTodo(@Body() createTodo: CreateTodoDTO): Todo {
+  createTodo(@Body() createTodo: ArgsTodoDTO): Todo {
     return this.todoService.createTodo(createTodo)
   }
 
@@ -22,9 +26,14 @@ export class TodosController {
     return this.todoService.getTodoByID(id)
   }
 
-  @Put('/:id')
-  updateTodoByID(@Body() args: CreateTodoDTO, @Param('id') id: string) {
+  @Patch('/:id')
+  updateTodoByID(@Body() args: ArgsTodoDTO, @Param('id') id: string) {
     return this.todoService.updateTodo(args, id)
+  }
+
+  @Patch('/:id/status')
+  updateStatusTodo(@Body() status: TodoStatus, @Param('id') id: string) {
+    return this.todoService.updateTodoStatus(status, id)
   }
 
   @Delete('/:id')
