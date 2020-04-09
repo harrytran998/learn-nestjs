@@ -32,7 +32,7 @@ export class TodosController {
   }
 
   @Patch('/:id/status')
-  updateStatusTodo(@Body() status: TodoStatus, @Param('id') id: string) {
+  updateStatusTodo(@Body('status') status: TodoStatus, @Param('id') id: string) {
     return this.todoService.updateTodoStatus(status, id)
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, ConflictException } from '@nestjs/common'
 import { Todo, TodoStatus } from './todos.model'
 import { v4 as uuidV4 } from 'uuid'
 import { ArgsTodoDTO } from './dto/argsTodo.dto'
@@ -35,6 +35,7 @@ export class TodosService {
       status: TodoStatus.OPEN,
     }
     this.todos.push(newTodo)
+    // this.todos = [...this.todos, { ...newTodo }]
     return newTodo
   }
 
@@ -52,7 +53,11 @@ export class TodosService {
 
   updateTodoStatus(status: TodoStatus, todoID: string): Todo {
     const todo = this.getTodoByID(todoID)
-    todo.status = status
+    if (Object.values(TodoStatus).includes(status)) {
+      todo.status = status
+    } else {
+      throw new ConflictException('Fuck')
+    }
     return todo
   }
 
