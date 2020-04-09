@@ -21,7 +21,7 @@ export class TodosController {
   constructor(private readonly todoService: TodosService) {}
 
   @Get()
-  getTodos(@Query() filterDto: FilterTodoDTO): Todo[] {
+  getTodos(@Query(ValidationPipe) filterDto: FilterTodoDTO): Todo[] {
     if (Object.keys(filterDto).length) {
       return this.todoService.getFilterTodos(filterDto)
     }
