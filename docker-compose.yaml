@@ -9,9 +9,9 @@ services:
     depends_on:
       - nestjs-todo-db
     environment:
-      - DB_URL=postgres://root:password@nestjs-todo-db/db?charset=UTF8
+      - DB_URL=postgres://root:password@nestjs-todo-db/nestjs-db?charset=UTF8
     ports:
-      - '6969:6969'
+      - '3000:3000'
     volumes:
       - .:/opt/app/nestjs-backend
 
@@ -20,7 +20,7 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=db
-    image: postgres:11
+      - POSTGRES_DB=nestjs-db
+    image: postgres:11-alpine
     ports:
       - 0.0.0.0:7200:5432
