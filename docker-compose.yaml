@@ -1,26 +1,42 @@
 version: '3.7'
 services:
   nestjs-todo-backend:
+    container_name: nestjs-todo-backend
     build:
       context: .
+      target: development
       cache_from:
         - node:12.16.1-alpine
-    container_name: nestjs-todo-backend
     depends_on:
-      - nestjs-todo-db
-    environment:
-      - DB_URL=postgres://root:password@nestjs-todo-db/nestjs-db?charset=UTF8
+      - postgres-db
+    env_file:
+      - .env
     ports:
-      - '3000:3000'
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - 9229:9229
     volumes:
       - .:/opt/app/nestjs-backend
+      - .:/opt/app/nestjs-backend/node_modules
+    networks:
+      - webnet
+    command: yarn start:dev
 
-  nestjs-todo-db:
-    container_name: nestjs-todo-db
+  postgres-db:
+    container_name: postgres-db
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=nestjs-db
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      PG_DATA: /var/lib/postgresql/data
     image: postgres:11-alpine
     ports:
-      - 0.0.0.0:7200:5432
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - webnet
+
+networks:
+  webnet:
+volumes:
+  pgdata:
