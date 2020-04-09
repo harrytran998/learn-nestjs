@@ -1,0 +1,17 @@
+node_modules
+.git
+.DS_Store
+
+*.csv
+/tmp/*
+.vscode
+scripts/verify-commit-msg.js
+
+.eslintrc.json
+.gitignore
+.editorconfig
+.prettierrc
+.prettierignore
+Dockerfile
+LICENSE
+README.md
