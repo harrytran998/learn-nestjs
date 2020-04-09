@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common'
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common'
 import { Todo, TodoStatus } from './todos.model'
 import { v4 as uuidV4 } from 'uuid'
 import { ArgsTodoDTO } from './dto/argsTodo.dto'
@@ -40,7 +40,11 @@ export class TodosService {
   }
 
   getTodoByID(todoID: string): Todo {
-    return this.todos.find(todo => todo.id === todoID)
+    const todo = this.todos.find(todo => todo.id === todoID)
+    if (!todo) {
+      throw new NotFoundException(`Doesn't exists todo with ID ${todoID}`)
+    }
+    return todo
   }
 
   updateTodo(args: ArgsTodoDTO, todoID: string): Todo {
@@ -63,6 +67,9 @@ export class TodosService {
 
   deleteTodo(todoID: string): void {
     const index = this.todos.findIndex(todo => todo.id === todoID)
+    if (index === -1) {
+      throw new NotFoundException(`Doesn't exists todo with ID ${todoID}`)
+    }
     this.todos.splice(index, 1)
   }
 }
