@@ -1,28 +1,26 @@
 FROM node:12.16.1-alpine AS development
 
-WORKDIR /opt/app/nestjs-todo
+WORKDIR /opt/app/nestjs-todo-backend
 
-COPY package.json ./
+COPY . /opt/app/nestjs-todo-backend
 
-RUN yarn install --only=development
+RUN yarn install
 
-COPY . /opt/app/nestjs-todo
+CMD yarn start:dev
 
-RUN yarn build
+# FROM node:12.16.1-alpine as production
 
-FROM node:12.16.1-alpine as production
+# ARG NODE_ENV=production
+# ENV NODE_ENV=${NODE_ENV}
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+# WORKDIR /opt/app/nestjs-todo
 
-WORKDIR /opt/app/nestjs-todo
+# COPY package*.json ./
 
-COPY package*.json ./
+# RUN npm install --only=production
 
-RUN npm install --only=production
+# COPY . /opt/app/nestjs-todo
 
-COPY . /opt/app/nestjs-todo
+# COPY --from=development /opt/app/nestjs-todo/dist ./dist
 
-COPY --from=development /opt/app/nestjs-todo/dist ./dist
-
-CMD ["node", "dist/main"]
+# CMD ["node", "dist/main"]

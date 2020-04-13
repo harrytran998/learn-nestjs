@@ -9,7 +9,10 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@helpers/*": ["./src/helpers/*"]
+    }
   },
   "exclude": ["node_modules", "dist"]
 }
