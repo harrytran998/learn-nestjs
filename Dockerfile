@@ -1,4 +1,4 @@
-FROM node:12.16.1-alpine AS development
+FROM node:12.18.0-alpine AS development
 
 WORKDIR /opt/app/nestjs-todo-backend
 
